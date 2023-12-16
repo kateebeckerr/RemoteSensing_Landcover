@@ -29,6 +29,8 @@ user afterward.
 For further data, workflow, and project information refer to this GitHub
 link: <https://github.com/kateebeckerr/RemoteSensing_Landcover>
 
+Credit: this lab is based on a materials developed by Chris Kibler
+
 ## Data Descriptors
 
 1.  **Landsat 5 Thematic Mapper**: Landsat 5, developed by NASA, carries
@@ -83,6 +85,11 @@ names(land_20070925) <- c("blue", "green", "red", "NIR", "SWIR1", "SWIR2")
 plotRGB(land_20070925, r = 3, g = 2, b = 1, stretch = "lin")
 ```
 
+```{r}
+class(land_20070925)
+
+```
+
 ### Santa Barbara County Shapefile
 
 ```{r}
@@ -118,7 +125,7 @@ landsat_mask <- mask(landsat_crop, SB)
 
 In order to visualize Landsat values, reflectance can be employed.
 Reflectance is a measure of how much light is reflected by a surface at
-different wavelengths and in remote sensing satellites capture the
+different wavelengths and in remote sensing, satellites capture the
 reflected light in various spectral bands. Landsat satellites typically
 capture data in the visible, near-infrared, and short-wave infrared
 bands and can provide insights into land cover, vegetation health, and
@@ -182,7 +189,7 @@ SB_training <- left_join(training_values, training_attributes,
   mutate(type = as.factor(type)) # convert landcover type to factor
 ```
 
-### Train Decision Tree Classifier 
+### Train Decision Tree Classifier
 
 A decision tree classifier is a machine learning algorithm used for both
 regression and, more importantly in this case, classification. The
@@ -214,7 +221,7 @@ SB_decisiontree <- rpart(formula = SB_formula,
 prp(SB_decisiontree)
 ```
 
-### Applying the Decision Tree 
+### Applying the Decision Tree
 
 The entire image can now be applied to the decision tree and therefore
 apply a model to the data. The terra package includes a predict()
@@ -236,14 +243,10 @@ levels(SB_training$type)
 # This produces green_vegetation, soil_dead_grass, urban, and water levels 
 ```
 
-## Land Cover Visualization 
+## Land Cover Visualization
 
 ```{r}
 tm_shape(SB_classify) +
   tm_raster(title = "Landcover Type") +
-   tm_layout(legend.position = c("left", "bottom"))
+   tm_layout(legend.position = c("left", "bottom"), title = "Land Cover Map")
 ```
-
-# Findings: 
-
-this lab is based on a materials developed by Chris Kibler.
